@@ -1,3 +1,4 @@
+
 var cmd = require('node-cmd');
 var path, node_ssh, ssh, fs;
 fs = require('fs');
@@ -15,15 +16,15 @@ function main() {
 function installPM2() {
   return ssh.execCommand(
     'sudo npm install pm2 -g', {
-      cwd: '/home/ubuntu'
+      cwd: '/home/desktop/riot-express-todo-list'
   });
 }
 
 // transfers local project to the remote server
 function transferProjectToRemote(failed, successful) {
   return ssh.putDirectory(
-    '../riot-express-todo-list',
-    '/home/ubuntu/riot-express-todo-list-temp',
+    '../hackathon-starter',
+    '/home/desktop/hackathon-starter/hackathon-starter-temp',
     {
       recursive: true,
       concurrency: 1,
@@ -49,8 +50,8 @@ function transferProjectToRemote(failed, successful) {
 // creates a temporary folder on the remote server
 function createRemoteTempFolder() {
   return ssh.execCommand(
-    'rm -rf riot-express-todo-list-temp && mkdir riot-express-todo-list-temp', {
-      cwd: '/home/ubuntu'
+    'rm -rf hackathon-starter-temp && mkdir hackathon-starter-temp', {
+      cwd: '/home/desktop/hackathon-starter'
   });
 }
 
@@ -58,15 +59,15 @@ function createRemoteTempFolder() {
 function stopRemoteServices() {
   return ssh.execCommand(
     'pm2 stop all && sudo service mongod stop', {
-      cwd: '/home/ubuntu'
+      cwd: '/home/desktop/hackathon-starter'
   });
 }
 
 // updates the project source on the server
 function updateRemoteApp() {
   return ssh.execCommand(
-    'cp -r riot-express-todo-list-temp/* riot-express-todo-list / && rm -rf riot-express-todo-list-temp', {
-      cwd: '/home/ubuntu'
+    'cp -r hackathon-starter-temp/* hackathon-starter/ && rm -rf hackathon-starter-temp', {
+      cwd: '/home/desktop/hackathon-starter'
   });
 }
 
@@ -74,7 +75,7 @@ function updateRemoteApp() {
 function restartRemoteServices() {
   return ssh.execCommand(
     'cd hackathon-starter && sudo service mongod start && pm2 start app.js', {
-      cwd: '/home/desktop/riot-express-todo-list/'
+      cwd: '/home/desktop/hackathon-starter'
   });
 }
 
@@ -85,7 +86,7 @@ function sshConnect() {
   ssh
     .connect({
       // TODO: ADD YOUR IP ADDRESS BELOW (e.g. '12.34.5.67')
-      host: '13.58.86.63',
+      host: '18.223.122.214',
       username: 'ubuntu',
       privateKey: 'hs-key.pem'
     })
@@ -95,7 +96,7 @@ function sshConnect() {
       return installPM2();
     })
     .then(function() {
-      console.log('Creating `riot-express-todo-list-temp` folder.');
+      console.log('Creating `hackathon-starter-temp` folder.');
       return createRemoteTempFolder();
     })
     .then(function(result) {
@@ -146,3 +147,4 @@ function sshConnect() {
 }
 
 main();
+
