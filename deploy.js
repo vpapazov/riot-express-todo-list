@@ -23,8 +23,8 @@ function installPM2() {
 // transfers local project to the remote server
 function transferProjectToRemote(failed, successful) {
   return ssh.putDirectory(
-    '../hackathon-starter',
-    '/home/desktop/hackathon-starter/hackathon-starter-temp',
+    '../riot-express-todo-list',
+    '/home/desktop/riot-express-todo-list/riot-express-todo-list-temp',
     {
       recursive: true,
       concurrency: 1,
@@ -51,7 +51,7 @@ function transferProjectToRemote(failed, successful) {
 function createRemoteTempFolder() {
   return ssh.execCommand(
     'rm -rf hackathon-starter-temp && mkdir hackathon-starter-temp', {
-      cwd: '/home/desktop/hackathon-starter'
+      cwd: '/home/desktop/riot-express-todo-list'
   });
 }
 
@@ -75,7 +75,7 @@ function updateRemoteApp() {
 function restartRemoteServices() {
   return ssh.execCommand(
     'cd hackathon-starter && sudo service mongod start && pm2 start app.js', {
-      cwd: '/home/desktop/hackathon-starter'
+      cwd: '/home/desktop/riot-express-todo-list'
   });
 }
 
@@ -96,7 +96,7 @@ function sshConnect() {
       return installPM2();
     })
     .then(function() {
-      console.log('Creating `hackathon-starter-temp` folder.');
+      console.log('Creating `riot-express-todo-list` folder.');
       return createRemoteTempFolder();
     })
     .then(function(result) {
