@@ -86,7 +86,7 @@ function sshConnect() {
   ssh
     .connect({
       // TODO: ADD YOUR IP ADDRESS BELOW (e.g. '12.34.5.67')
-      host: '18.219.156.206',
+      host: '18.222.213.160',
       username: 'ubuntu',
       privateKey: '/home/desktop/riot-express-todo-list/hs-key.pem'
     })
